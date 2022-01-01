@@ -1,11 +1,38 @@
 <template>
 	<div class="home">
-		<MobileView color="#EBEAEF"></MobileView>
-		<MobileView color="#F2F0F1"></MobileView>
+		<MobileView color="#EBEAEF">
+			<ProductPage @addToCart="addToCart" />
+		</MobileView>
+		<MobileView color="#F2F0F1">
+			<CartPage :cartItems="cartItem" @checkout="checkout" />
+		</MobileView>
 	</div>
 </template>
 <script setup>
 import MobileView from './components/MobileView.vue';
+import ProductPage from './components/ProductPage.vue';
+import CartPage from './components/CartPage.vue';
+import { ref } from 'vue';
+import { createToast } from 'mosha-vue-toastify';
+import 'mosha-vue-toastify/dist/style.css';
+
+const cartItem = ref([]);
+
+const addToCart = (item) => {
+	const isInCart = cartItem.value.find((cart) => cart.img === item.value.img);
+	if (isInCart) {
+		createToast('Item already exist', {
+			type: 'danger',
+		});
+		return;
+	}
+	cartItem.value = [...cartItem.value, item.value];
+	console.log(cartItem.value);
+};
+
+const checkout = () => {
+	cartItem.value = [];
+};
 </script>
 
 <style lang="scss">
