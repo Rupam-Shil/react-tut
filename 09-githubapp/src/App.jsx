@@ -1,45 +1,41 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import { useState, useContext } from 'react';
+import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+import { Routes, Route, Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.jsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
-  )
-}
+import { initializeApp } from 'firebase/app';
+//pages
+import Home from './views/Home';
+import Signin from './views/Signin';
+import Signup from './views/Signup';
+import PageNotFound from './views/404';
 
-export default App
+//Layout
+import Footer from './layout/Footer';
+import Header from './layout/Header';
+
+import { UserContext } from './context/UserContext';
+
+const App = () => {
+	const [user, setUser] = useState(null);
+	return (
+		<div>
+			<ToastContainer />
+			<UserContext.Provider value={{ user, setUser }}>
+				<Header />
+				<Routes>
+					<Route path="/" element={<Home />} />
+					<Route path="/signin" element={<Signin />} />
+					<Route path="/signup" element={<Signup />} />
+					<Route path="*" element={<PageNotFound />} />
+				</Routes>
+				<Footer />
+			</UserContext.Provider>
+		</div>
+	);
+};
+
+export default App;
