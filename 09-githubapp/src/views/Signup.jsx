@@ -52,7 +52,7 @@ const SignUp = () => {
 	};
 
 	if (context.user?.uid) {
-		return <Redirect to="/" />;
+		return <Navigate to="/" />;
 	}
 	return (
 		<Container className="text-center">
